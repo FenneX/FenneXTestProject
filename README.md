@@ -1,59 +1,61 @@
-FenneX
+FenneXEmptyProject
 =========
 
 Introduction
 --
 
-FenneX goal is to allow faster development of cocos2d-x apps, by exposing native OS features as easy to use C++ API and by adding support classes for a specific workflow.
+FenneXEmptyProject serve as a starting point to create an iOS and Android project using FenneX. 
+For more information on FenneX, see https://github.com/FenneX/FenneX
+If you want to see code samples, see https://github.com/FenneX/FenneXTestProject
 
-It currently uses V3.2 of cocos2d-x, and is going to undergo a lot of changes to make the interface easier to use and the code cleaner. The current version was originally not planned to be open-sourced. The goal of open-sourcing it is to provide samples for people trying to use native OS features. 
-
-Building
+Setup
 --
-To build, you need to take example on the sample project at https://github.com/FenneX/FenneXEmptyProject
+1. pull the repo
+
+       $ git clone git@github.com:fennex/fennexemptyproject.git
+          
+2. add FenneX as a remote
+
+       $ git remote add fennex git@github.com:fennex/fennex.git
+
+3. when you want to update FenneX, pull it
+
+       $ git pull fennex master
+          
+
+Building for iOS
+--
+Simply open the proj.ios_mac/FenneXEmptyProject.xcodeproj and run scheme EmptyProject iOS
+
+Building for Android
+--
+1. create a file local.properties in proj.android which points to your Android SDK
+
+       sdk.dir=/Path/To/Your/SDK/adt-bundle-mac/sdk/
+
+2. make sure your gradle.properties file at ~/.gradle/gradle.properties have ANDROID_NDK_HOME path pointing to NDK r9d or newer
+
+       ANDROID_NDK_HOME=/Path/To/Your/NDK/android-ndk-r9d
+
+3. run Gradle from proj.android with a connected Android device
+
+       ./gradlew installDebug
+
+4. you can also import the build.gradle in Android Studio and launch it
+       
 
 Support
 --
 Building tested on Mac OS X 10.8 and 10.9 with Xcode 5.1 and NDK r9d
 Runtime iOS 5.0+ and Android 2.3.3+
 
-Roadmap
+Additional features of FenneXEmptyProject
 --
-* upgrade to Modern C++ and remove most deprecated warnings
-* refactor the API
-* switch to a library
-* reduce duplicates with cocos2d-x
-* develop a test project
-* separate wrappers as modules you can activate/deactivate
-
-Changelog from V2.2
---
-* Updated to cocos2d-x V3.2
-* Removed SuperAnim (not working on V3.2, really hard to port)
-* ExpansionSupport Java files removed because of dependencies to other projects. Will be re-added as a module
-* VideoPlayer and VideoRecorder support removed on Android. To be re-added in the future
-* Switched to Gradle for Android compilation
-
-
-Q/A
---
-
-##### What's the origin of Fennex?
-FenneX is a "scratch your own itch" framework, and as such may not be useful to lots of persons. The basis dates back from before cocos2d-iphone V1, and as such a lot of methods have become redundant with current cocos2d-x implementation.
-
-##### Why does it include a full cocos2d-x version?
-FenneX includes a full customized version of cocos2d-x, because it requires additionnal methods not present in standard cocos2d-x. The full list of modification by file can be found in cocos2d-xmodifications.txt
-
-##### How about building on other platforms?
-You are welcomed to try to build on other platforms and report the result and what's needed.
-
-##### How about other OS (Windows Phone, Mac, Linux, Windows ...) that cocos2d-x support?
-Other deploy platforms are not planned anytime soon, as it requires a lot of effort to port all the native wrappers
-
-##### How can I contribute?
-If you notice a bug, please open an issue
-If you fixed a bug or added a feature, send a pull request, explaining what you fixed/added.
-All code must follow the same coding style as the rest of FenneX
+More than being a simple empty project, FenneXEmptyProject have a few features out of the box:
+* implement back button and quit app with back on Android
+* automatic reporting of language and visited scenes on Google Analytics and Flurry
+* have a structure for multi-resolution support
+* "Monkey" to automatically test your app
 
 Contributors
 --
@@ -61,15 +63,6 @@ Contributors
 * Pierre Bertinet
 * Alexandre Mili
 * Vincent Te
-
-Acknoledgements
---
-FenneX include several other open-source projects, without which it wouldn't be possible:
-* Cocos2d-x: http://cocos2d-x.org/
-* AnalyticX: https://github.com/diwu/AnalyticX
-* pugixml: http://pugixml.org/
-
-If you think you should appear here, please open an issue and I'll correct it.
 
 Auticiel
 --
