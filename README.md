@@ -12,16 +12,16 @@ Setup
 --
 1. pull the repo
 
-       $ git clone git@github.com:fennex/fennexemptyproject.git
-          
+         $ git clone git@github.com:fennex/fennexemptyproject.git
+
 2. add FenneX as a remote
 
-       $ git remote add fennex git@github.com:fennex/fennex.git
+         $ git remote add fennex git@github.com:fennex/fennex.git
 
 3. when you want to update FenneX, pull it
 
-       $ git pull fennex master
-          
+         $ git pull fennex master
+ 
 
 Building for iOS
 --
@@ -31,15 +31,15 @@ Building for Android
 --
 1. create a file local.properties in proj.android which points to your Android SDK
 
-       sdk.dir=/Path/To/Your/SDK/adt-bundle-mac/sdk/
+         sdk.dir=/Path/To/Your/SDK/adt-bundle-mac/sdk/
 
 2. make sure your gradle.properties file at ~/.gradle/gradle.properties have ANDROID_NDK_HOME path pointing to NDK r9d or newer
 
-       ANDROID_NDK_HOME=/Path/To/Your/NDK/android-ndk-r9d
+         ANDROID_NDK_HOME=/Path/To/Your/NDK/android-ndk-r9d
 
 3. run Gradle from proj.android with a connected Android device
 
-       ./gradlew installDebug
+         $ ./gradlew installDebug
 
 4. you can also import the build.gradle in Android Studio and launch it
        
