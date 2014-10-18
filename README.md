@@ -42,7 +42,12 @@ Building for Android
          $ ./gradlew installDebug
 
 4. you can also import the build.gradle in Android Studio and launch it
-       
+
+Modifying assets
+--
+When you modify the ccb files, you need to re-publish the ccb files, by opening `ccb/FenneXTestProject.ccbproj` with CocosBuilder V3 and doing `File -> Publish`.
+For convenience, an already published version is provided.
+      
 
 Support
 --

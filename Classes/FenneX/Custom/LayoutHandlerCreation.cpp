@@ -57,6 +57,9 @@ void LayoutHandler::createSceneGraphics(Scene* target)
             break;
         case Home:
             //Your first scene, do your app logic here
+            loadCCBFromFileToFenneX("ccbi/Home");
+            break;
+        case TestImagePicker:
             break;
         default:
             //Scenes that don't require any logic can be automatically loaded from their name

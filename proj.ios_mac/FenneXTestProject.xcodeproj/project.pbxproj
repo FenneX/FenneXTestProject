@@ -102,6 +102,11 @@
 		6A35CA4E199D07BE009A2D9C /* Scene+Alloc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A35C9D5199D07BE009A2D9C /* Scene+Alloc.cpp */; };
 		6A35CA4F199D07BE009A2D9C /* AnalyticsWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A35C9D9199D07BE009A2D9C /* AnalyticsWrapper.cpp */; };
 		6A35CA50199D07BE009A2D9C /* AudioPlayerRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A35C9DC199D07BE009A2D9C /* AudioPlayerRecorder.cpp */; };
+		6A51F4E519F2B56E00213151 /* ccbi in Resources */ = {isa = PBXBuildFile; fileRef = 6A51F4E119F2B56E00213151 /* ccbi */; };
+		6A51F4E619F2B56E00213151 /* ipad in Resources */ = {isa = PBXBuildFile; fileRef = 6A51F4E219F2B56E00213151 /* ipad */; };
+		6A51F4E719F2B56E00213151 /* ipadhd in Resources */ = {isa = PBXBuildFile; fileRef = 6A51F4E319F2B56E00213151 /* ipadhd */; };
+		6A51F4E819F2B56E00213151 /* iphone in Resources */ = {isa = PBXBuildFile; fileRef = 6A51F4E419F2B56E00213151 /* iphone */; };
+		6A51F4EB19F2B94C00213151 /* Quicksand.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A51F4EA19F2B94B00213151 /* Quicksand.ttf */; };
 		6A99878519A1ED5700CB7183 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A99877B19A1ED5700CB7183 /* CoreData.framework */; };
 		6A99878619A1ED5700CB7183 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A99877C19A1ED5700CB7183 /* MediaPlayer.framework */; };
 		6A99878719A1ED5700CB7183 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A99877D19A1ED5700CB7183 /* MessageUI.framework */; };
@@ -435,6 +440,11 @@
 		6A35C9E4199D07BE009A2D9C /* TTSWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSWrapper.h; sourceTree = "<group>"; };
 		6A35C9E5199D07BE009A2D9C /* VideoPickerWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPickerWrapper.h; sourceTree = "<group>"; };
 		6A35C9E6199D07BE009A2D9C /* VideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayer.h; sourceTree = "<group>"; };
+		6A51F4E119F2B56E00213151 /* ccbi */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ccbi; path = ../AppAssets/ccbi; sourceTree = "<group>"; };
+		6A51F4E219F2B56E00213151 /* ipad */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ipad; path = ../AppAssets/ipad; sourceTree = "<group>"; };
+		6A51F4E319F2B56E00213151 /* ipadhd */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ipadhd; path = ../AppAssets/ipadhd; sourceTree = "<group>"; };
+		6A51F4E419F2B56E00213151 /* iphone */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iphone; path = ../AppAssets/iphone; sourceTree = "<group>"; };
+		6A51F4EA19F2B94B00213151 /* Quicksand.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Quicksand.ttf; sourceTree = "<group>"; };
 		6A99877B19A1ED5700CB7183 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		6A99877C19A1ED5700CB7183 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
 		6A99877D19A1ED5700CB7183 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/MessageUI.framework; sourceTree = DEVELOPER_DIR; };
@@ -943,7 +953,12 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6A51F4EA19F2B94B00213151 /* Quicksand.ttf */,
 				6A9C820D19A1FA9A004AC8E8 /* letters_conversion.txt */,
+				6A51F4E119F2B56E00213151 /* ccbi */,
+				6A51F4E219F2B56E00213151 /* ipad */,
+				6A51F4E319F2B56E00213151 /* ipadhd */,
+				6A51F4E419F2B56E00213151 /* iphone */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -1108,7 +1123,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A51F4E819F2B56E00213151 /* iphone in Resources */,
+				6A51F4E719F2B56E00213151 /* ipadhd in Resources */,
+				6A51F4EB19F2B94C00213151 /* Quicksand.ttf in Resources */,
 				6A9C820E19A1FA9B004AC8E8 /* letters_conversion.txt in Resources */,
+				6A51F4E519F2B56E00213151 /* ccbi in Resources */,
+				6A51F4E619F2B56E00213151 /* ipad in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

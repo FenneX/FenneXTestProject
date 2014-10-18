@@ -34,6 +34,7 @@ typedef enum
 	None = 0,
     SplashScreen = 1,
     Home = 2,
+    TestImagePicker = 3,
 }SceneName;
 
 //Here is the place to put your hierarchy so FenneX know what to do with a Back event
@@ -41,6 +42,8 @@ static SceneName getPreviousSceneName(SceneName scene)
 {
     switch(scene)
     {
+        case TestImagePicker:
+            return Home;
         default:
             return None;
     }
@@ -58,6 +61,8 @@ static const char* formatSceneToString(SceneName scene)
 			return "SplashScreen";
 		case Home:
 			return "Home";
+		case TestImagePicker:
+			return "TestImagePicker";
     }
     return "Missing From List";
 }
