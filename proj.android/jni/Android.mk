@@ -6,9 +6,9 @@ $(call import-add-path,$(LOCAL_PATH)/../../cocos2d)
 $(call import-add-path,$(LOCAL_PATH)/../../cocos2d/external)
 $(call import-add-path,$(LOCAL_PATH)/../../cocos2d/cocos)
 
-LOCAL_MODULE := emptyproject_shared
+LOCAL_MODULE := testproject_shared
 
-LOCAL_MODULE_FILENAME := libemptyproject
+LOCAL_MODULE_FILENAME := libtestproject
 
 #use a find command to have all cpp files in Classes and in jni (current folder)
 CPP_FILES := $(shell find $(LOCAL_PATH)/../../Classes -name "*.cpp")

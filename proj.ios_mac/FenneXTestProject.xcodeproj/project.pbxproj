@@ -271,7 +271,7 @@
 		1AFAF8B316D35DE700DB1158 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = ../Classes/AppDelegate.cpp; sourceTree = "<group>"; };
 		1AFAF8B416D35DE700DB1158 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../Classes/AppDelegate.h; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D6058910D05DD3D006BFB54 /* FenneXEmptyProject iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FenneXEmptyProject iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* FenneXTestProject iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FenneXTestProject iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
@@ -286,7 +286,7 @@
 		503AE10417EB98FF00D1A890 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = mac/Prefix.pch; sourceTree = "<group>"; };
 		503AE11117EB99EE00D1A890 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		503AE11A17EB9C5A00D1A890 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		5087E76F17EB910900C73F5D /* FenneXEmptyProject Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FenneXEmptyProject Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5087E76F17EB910900C73F5D /* FenneXTestProject Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FenneXTestProject Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5087E78817EB974C00C73F5D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5087E78A17EB975400C73F5D /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		6A35C908199D074A009A2D9C /* AnalyticsWrapperImpl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AnalyticsWrapperImpl.mm; sourceTree = "<group>"; };
@@ -308,7 +308,7 @@
 		6A35C91B199D074A009A2D9C /* AudioPlayerRecorderWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioPlayerRecorderWrapper.mm; sourceTree = "<group>"; };
 		6A35C91C199D074A009A2D9C /* NSFileManager+ApplicationSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+ApplicationSupport.h"; sourceTree = "<group>"; };
 		6A35C91D199D074A009A2D9C /* NSFileManager+ApplicationSupport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+ApplicationSupport.mm"; sourceTree = "<group>"; };
-		6A35C91E199D074A009A2D9C /* FenneXEmptyProject-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "FenneXEmptyProject-Info.plist"; path = "ios/FenneXEmptyProject-Info.plist"; sourceTree = SOURCE_ROOT; };
+		6A35C91E199D074A009A2D9C /* FenneXTestProject-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "FenneXTestProject-Info.plist"; path = "ios/FenneXTestProject-Info.plist"; sourceTree = SOURCE_ROOT; };
 		6A35C920199D074A009A2D9C /* ImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePicker.h; sourceTree = "<group>"; };
 		6A35C921199D074A009A2D9C /* ImagePicker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImagePicker.mm; sourceTree = "<group>"; };
 		6A35C922199D074A009A2D9C /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
@@ -528,7 +528,7 @@
 				503AE0FF17EB989F00D1A890 /* RootViewController.mm */,
 				6A35C907199D074A009A2D9C /* Analytics */,
 				6A35C916199D074A009A2D9C /* Audio */,
-				6A35C91E199D074A009A2D9C /* FenneXEmptyProject-Info.plist */,
+				6A35C91E199D074A009A2D9C /* FenneXTestProject-Info.plist */,
 				6A35C91F199D074A009A2D9C /* Image */,
 				6A35C924199D074A009A2D9C /* InApp */,
 				6A35C92C199D074A009A2D9C /* LocalNotification */,
@@ -555,8 +555,8 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* FenneXEmptyProject iOS.app */,
-				5087E76F17EB910900C73F5D /* FenneXEmptyProject Mac.app */,
+				1D6058910D05DD3D006BFB54 /* FenneXTestProject iOS.app */,
+				5087E76F17EB910900C73F5D /* FenneXTestProject Mac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -952,9 +952,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* FenneXEmptyProject iOS */ = {
+		1D6058900D05DD3D006BFB54 /* FenneXTestProject iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "FenneXEmptyProject iOS" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "FenneXTestProject iOS" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -969,14 +969,14 @@
 				1AC6FB2B180E99E1004C840B /* PBXTargetDependency */,
 				1AC6FB2D180E99E1004C840B /* PBXTargetDependency */,
 			);
-			name = "FenneXEmptyProject iOS";
+			name = "FenneXTestProject iOS";
 			productName = iphone;
-			productReference = 1D6058910D05DD3D006BFB54 /* FenneXEmptyProject iOS.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* FenneXTestProject iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5087E73D17EB910900C73F5D /* FenneXEmptyProject Mac */ = {
+		5087E73D17EB910900C73F5D /* FenneXTestProject Mac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "FenneXEmptyProject Mac" */;
+			buildConfigurationList = 5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "FenneXTestProject Mac" */;
 			buildPhases = (
 				5087E74817EB910900C73F5D /* Resources */,
 				5087E75617EB910900C73F5D /* Sources */,
@@ -991,9 +991,9 @@
 				1AC6FB1A180E9959004C840B /* PBXTargetDependency */,
 				1AC6FB1C180E9959004C840B /* PBXTargetDependency */,
 			);
-			name = "FenneXEmptyProject Mac";
+			name = "FenneXTestProject Mac";
 			productName = iphone;
-			productReference = 5087E76F17EB910900C73F5D /* FenneXEmptyProject Mac.app */;
+			productReference = 5087E76F17EB910900C73F5D /* FenneXTestProject Mac.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1004,7 +1004,7 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "FenneXEmptyProject" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "FenneXTestProject" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -1024,8 +1024,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* FenneXEmptyProject iOS */,
-				5087E73D17EB910900C73F5D /* FenneXEmptyProject Mac */,
+				1D6058900D05DD3D006BFB54 /* FenneXTestProject iOS */,
+				5087E73D17EB910900C73F5D /* FenneXTestProject Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -1283,14 +1283,14 @@
 					"$(SRCROOT)/../cocos2d/cocos/platform/ios",
 					"$(SRCROOT)/../cocos2d/cocos/platform/ios/Simulation",
 				);
-				INFOPLIST_FILE = "ios/FenneXEmptyProject-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ios/FenneXTestProject-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/ios/Analytics/FlurryLib",
 					"$(PROJECT_DIR)/ios/Analytics/GAILib",
 					"$(PROJECT_DIR)/ios/TestFlight",
 				);
-				PRODUCT_NAME = "FenneXEmptyProject iOS";
+				PRODUCT_NAME = "FenneXTestProject iOS";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1320,14 +1320,14 @@
 					"$(SRCROOT)/../cocos2d/cocos/platform/ios",
 					"$(SRCROOT)/../cocos2d/cocos/platform/ios/Simulation",
 				);
-				INFOPLIST_FILE = "ios/FenneXEmptyProject-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ios/FenneXTestProject-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/ios/Analytics/FlurryLib",
 					"$(PROJECT_DIR)/ios/Analytics/GAILib",
 					"$(PROJECT_DIR)/ios/TestFlight",
 				);
-				PRODUCT_NAME = "FenneXEmptyProject iOS";
+				PRODUCT_NAME = "FenneXTestProject iOS";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1361,7 +1361,7 @@
 				);
 				INFOPLIST_FILE = mac/Info.plist;
 				LIBRARY_SEARCH_PATHS = "";
-				PRODUCT_NAME = "FenneXEmptyProject Mac";
+				PRODUCT_NAME = "FenneXTestProject Mac";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -1389,7 +1389,7 @@
 				);
 				INFOPLIST_FILE = mac/Info.plist;
 				LIBRARY_SEARCH_PATHS = "";
-				PRODUCT_NAME = "FenneXEmptyProject Mac";
+				PRODUCT_NAME = "FenneXTestProject Mac";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
@@ -1458,7 +1458,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "FenneXEmptyProject iOS" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "FenneXTestProject iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -1467,7 +1467,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "FenneXEmptyProject Mac" */ = {
+		5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "FenneXTestProject Mac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5087E76D17EB910900C73F5D /* Debug */,
@@ -1476,7 +1476,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "FenneXEmptyProject" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "FenneXTestProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,

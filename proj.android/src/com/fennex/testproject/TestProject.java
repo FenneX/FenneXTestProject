@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-package com.fennex.emptyproject;
+package com.fennex.testproject;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,11 +30,11 @@ import android.util.Log;
 import com.fennex.modules.ActivityResultNotifier;
 import com.diwublog.AnalyticX.AnalyticXBridge;
 import com.flurry.android.FlurryAgent;
-import com.fennex.emptyproject.R;
+import com.fennex.testproject.R;
 
-public class EmptyProject extends ActivityResultNotifier {
+public class TestProject extends ActivityResultNotifier {
 
-	private static volatile EmptyProject instance = null;
+	private static volatile TestProject instance = null;
 	//Return your Google Store private key for billing if you use in-app purchase
 	public String getPublicKey()
 	{
@@ -54,7 +54,7 @@ public class EmptyProject extends ActivityResultNotifier {
 		return null;
 	}
 	
-	public static EmptyProject getInstance()
+	public static TestProject getInstance()
 	{
 		return instance;
 	}
