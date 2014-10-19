@@ -107,6 +107,7 @@
 		6A51F4E719F2B56E00213151 /* ipadhd in Resources */ = {isa = PBXBuildFile; fileRef = 6A51F4E319F2B56E00213151 /* ipadhd */; };
 		6A51F4E819F2B56E00213151 /* iphone in Resources */ = {isa = PBXBuildFile; fileRef = 6A51F4E419F2B56E00213151 /* iphone */; };
 		6A51F4EB19F2B94C00213151 /* Quicksand.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A51F4EA19F2B94B00213151 /* Quicksand.ttf */; };
+		6A51F4F319F2C7C800213151 /* TestImagePickerScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A51F4F119F2C7C800213151 /* TestImagePickerScene.cpp */; };
 		6A99878519A1ED5700CB7183 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A99877B19A1ED5700CB7183 /* CoreData.framework */; };
 		6A99878619A1ED5700CB7183 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A99877C19A1ED5700CB7183 /* MediaPlayer.framework */; };
 		6A99878719A1ED5700CB7183 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A99877D19A1ED5700CB7183 /* MessageUI.framework */; };
@@ -445,6 +446,8 @@
 		6A51F4E319F2B56E00213151 /* ipadhd */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ipadhd; path = ../AppAssets/ipadhd; sourceTree = "<group>"; };
 		6A51F4E419F2B56E00213151 /* iphone */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iphone; path = ../AppAssets/iphone; sourceTree = "<group>"; };
 		6A51F4EA19F2B94B00213151 /* Quicksand.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Quicksand.ttf; sourceTree = "<group>"; };
+		6A51F4F119F2C7C800213151 /* TestImagePickerScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestImagePickerScene.cpp; sourceTree = "<group>"; };
+		6A51F4F219F2C7C800213151 /* TestImagePickerScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestImagePickerScene.h; sourceTree = "<group>"; };
 		6A99877B19A1ED5700CB7183 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		6A99877C19A1ED5700CB7183 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
 		6A99877D19A1ED5700CB7183 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/MessageUI.framework; sourceTree = DEVELOPER_DIR; };
@@ -556,6 +559,7 @@
 				1AFAF8B316D35DE700DB1158 /* AppDelegate.cpp */,
 				1AFAF8B416D35DE700DB1158 /* AppDelegate.h */,
 				6A35C95F199D07BE009A2D9C /* AppMacros.h */,
+				6A51F4EE19F2C77E00213151 /* CustomScenes */,
 				6A35C974199D07BE009A2D9C /* FenneX */,
 			);
 			name = Classes;
@@ -950,6 +954,15 @@
 			path = NativeWrappers;
 			sourceTree = "<group>";
 		};
+		6A51F4EE19F2C77E00213151 /* CustomScenes */ = {
+			isa = PBXGroup;
+			children = (
+				6A51F4F119F2C7C800213151 /* TestImagePickerScene.cpp */,
+				6A51F4F219F2C7C800213151 /* TestImagePickerScene.h */,
+			);
+			path = CustomScenes;
+			sourceTree = "<group>";
+		};
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1209,6 +1222,7 @@
 				6A35C959199D074A009A2D9C /* VideoPicker.mm in Sources */,
 				6A35CA4C199D07BE009A2D9C /* LayoutHandlerCreation.cpp in Sources */,
 				6A35C957199D074A009A2D9C /* TTSWrapper.mm in Sources */,
+				6A51F4F319F2C7C800213151 /* TestImagePickerScene.cpp in Sources */,
 				6A35C94F199D074A009A2D9C /* InAppWrapper.mm in Sources */,
 				6A35C94C199D074A009A2D9C /* ImagePicker.mm in Sources */,
 				6A35CA26199D07BE009A2D9C /* GenericRecognizer.cpp in Sources */,

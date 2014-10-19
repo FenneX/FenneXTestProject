@@ -60,6 +60,13 @@ void LayoutHandler::createSceneGraphics(Scene* target)
             loadCCBFromFileToFenneX("ccbi/Home");
             break;
         case TestImagePicker:
+            loadCCBFromFileToFenneX("ccbi/TestImagePicker");
+            if(!isCameraAvailable())
+            { //Disable camera button, since we don't have any camera available
+                FenneX::LabelTTF* label = (FenneX::LabelTTF*)layer->firstObjectWithName("PickCameraLabel");
+                label->setLabelValue("Camera not avaible on your device");
+                layer->firstObjectWithName("PickCameraButton")->setEventActivated(false);
+            }
             break;
         default:
             //Scenes that don't require any logic can be automatically loaded from their name

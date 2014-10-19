@@ -23,6 +23,8 @@
  ****************************************************************************///
 
 #include "Scene.h"
+#include "TestImagePickerScene.h"
+
 USING_NS_FENNEX;
 
 FenneX::Scene* FenneX::Scene::createScene(SceneName name, CCDictionary* param)
@@ -31,6 +33,9 @@ FenneX::Scene* FenneX::Scene::createScene(SceneName name, CCDictionary* param)
     switch (name)
     {
             //If you want to create a different scene, here is the place to do it
+        case TestImagePicker:
+            created = new TestImagePickerScene(name, param);
+            break;
         default:
             created = new FenneX::Scene(name, param);
             break;
