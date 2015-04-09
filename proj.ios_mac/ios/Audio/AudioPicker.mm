@@ -55,16 +55,6 @@ bool pickSound(const char* promptText, const char* saveName, const char* identif
 #endif
 }
 
-void notifySoundPicked(const char* name, const char* identifier)
-{
-    CCNotificationCenter::sharedNotificationCenter()->postNotification("SoundPicked", DcreateP(Screate(name), Screate("Name"), Screate(identifier), Screate("Identifier"), NULL) );
-}
-
-void notifySoundEncoded(const char* name, const char* identifier)
-{
-    CCNotificationCenter::sharedNotificationCenter()->postNotification("SoundEncoded", DcreateP(Screate(name), Screate("Name"), Screate(identifier), Screate("Identifier"), NULL) );
-}
-
 bool isAudioPickerExporting()
 {
     return [AudioPicker sharedPicker].isExporting;

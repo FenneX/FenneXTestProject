@@ -38,15 +38,16 @@ class TapRecognizer : public GenericRecognizer
 public:
     static TapRecognizer* sharedRecognizer(void);
     
-    virtual bool onTouchBegan(CCTouch *touch, CCEvent *pEvent);
-    virtual void onTouchMoved(CCTouch *touch, CCEvent *pEvent);
-    virtual void onTouchEnded(CCTouch *touch, CCEvent *pEvent);
-    void cancelRecognitionForTouch(CCTouch* touch);
+    virtual bool onTouchBegan(Touch *touch, Event *pEvent);
+    virtual void onTouchMoved(Touch *touch, Event *pEvent);
+    virtual void onTouchEnded(Touch *touch, Event *pEvent);
+    virtual void cleanTouches();
+    void cancelRecognitionForTouch(Touch* touch);
 protected:
     void init();
     
 protected:
-    CCDictionary* touchStart;
+    std::map<int, float> touchStart;
     std::map<int, Vec2> touchInitialPosition;
 };
 NS_FENNEX_END

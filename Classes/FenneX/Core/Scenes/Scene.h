@@ -38,12 +38,12 @@ USING_NS_CC;
 
 NS_FENNEX_BEGIN
 //Warning : it is mandatory to stop() a scene before stopping using it, because there is a cyclic reference
-class Scene : public Pausable, public CCLayer
+class Scene : public Pausable, public Layer
 {
     CC_SYNTHESIZE(SceneName, sceneName, SceneName);
-    CC_SYNTHESIZE_READONLY(CCScene*, delegate, CocosScene);
-    CC_SYNTHESIZE_READONLY(CCArray*, updateList, UpdateList);
-    CC_SYNTHESIZE_READONLY(CCArray*, touchReceiversList, TouchReceiversList);
+    CC_SYNTHESIZE_READONLY(cocos2d::Scene*, delegate, CocosScene);
+    CC_SYNTHESIZE_READONLY_PASS_BY_REF(std::vector<Pausable*>, updateList, UpdateList);
+    CC_SYNTHESIZE_READONLY_PASS_BY_REF(Vector<GenericRecognizer*>, touchReceiversList, TouchReceiversList);
     //TODO : add touchlinker
     CC_SYNTHESIZE_READONLY(float, currentTime, CurrentTime);
     CC_SYNTHESIZE_READONLY(CCDictionary*, parameters, Parameters);
@@ -58,25 +58,29 @@ public:
     virtual void resume();
     virtual void stop();
     
-    virtual bool onTouchBegan(CCTouch *touch, CCEvent *pEvent);
-    virtual void onTouchMoved(CCTouch *touch, CCEvent *pEvent);
-    virtual void onTouchEnded(CCTouch *touch, CCEvent *pEvent);
-    virtual void onTouchCancelled(CCTouch *touch, CCEvent *pEvent);
+    virtual bool onTouchBegan(Touch *touch, Event *pEvent);
+    virtual void onTouchMoved(Touch *touch, Event *pEvent);
+    virtual void onTouchEnded(Touch *touch, Event *pEvent);
+    virtual void onTouchCancelled(Touch *touch, Event *pEvent);
     
-    void switchButton(CCPoint position, bool state, CCTouch* touch = NULL);
-    void switchButton(Image* obj, bool state, CCTouch* touch = NULL);
+    void switchButton(Vec2 position, bool state, Touch* touch = NULL);
+    void switchButton(Image* obj, bool state, Touch* touch = NULL);
     
     
-    void tapRecognized(CCObject* obj);
-    void dropAllTouches(Ref* obj);
-    void addUpdatable(CCObject* obj);
-    void removeUpdatable(CCObject* obj);
+    void tapRecognized(EventCustom* event);
+    void dropAllTouches(EventCustom* event);
+    
+    //Pausable will be retain/released if they are of type Ref*
+    void addUpdatable(Pausable* obj);
+    void removeUpdatable(Pausable* obj);
+    
+    //GenericRecognizer will always be retain/released
     void addTouchreceiver(GenericRecognizer* obj);
     void removeTouchreceiver(GenericRecognizer* obj);
     
-    static CCPoint touchPosition(CCTouch* touch);
-    static CCPoint previousTouchPosition(CCTouch* touch);
-    static CCPoint touchOffset(CCTouch* touch);
+    static Vec2 touchPosition(Touch* touch);
+    static Vec2 previousTouchPosition(Touch* touch);
+    static Vec2 touchOffset(Touch* touch);
     
     virtual void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
     
@@ -88,15 +92,18 @@ public:
     //TODO : on selection recognized, cancel tap recognition of that touch
 protected:
     void initScene();
-    Image* getButtonAtPosition(CCPoint position, bool state);
+    Image* getButtonAtPosition(Vec2 position, bool state);
     int numberOfTouches;
     TouchLinker* linker;
-    CCArray* updatablesToRemove;
-    CCArray* updatablesToAdd;
-    CCArray* receiversToRemove;
-    CCArray* receiversToAdd;
+    std::vector<Pausable*> updatablesToRemove;
+    std::vector<Pausable*> updatablesToAdd;
+    Vector<GenericRecognizer*> receiversToRemove;
+    Vector<GenericRecognizer*> receiversToAdd;
     int frameNumber;
-    EventListenerTouchOneByOne* listener;
+    EventListenerTouchOneByOne* touchListener;
+    EventListenerKeyboard* keyboardListener;
+    EventListenerCustom* tapListener;
+    EventListenerCustom* appWillResignListener;
 };
 NS_FENNEX_END
 

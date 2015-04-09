@@ -23,8 +23,7 @@
  ****************************************************************************/
 
 #include "base/CCEventCustom.h"
-#include "base/ccMacros.h"
-#include <functional>
+#include "base/CCEvent.h"
 
 NS_CC_BEGIN
 
@@ -33,6 +32,15 @@ EventCustom::EventCustom(const std::string& eventName)
 , _userData(nullptr)
 , _eventName(eventName)
 {
+}
+
+
+EventCustom* EventCustom::create(const std::string& eventName, void* data)
+{
+    EventCustom* event = new EventCustom(eventName);
+    event->setUserData(data);
+    event->autorelease();
+    return event;
 }
 
 NS_CC_END

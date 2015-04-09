@@ -29,6 +29,9 @@ THE SOFTWARE.
 #include <jni.h>
 #include "platform/android/jni/JniHelper.h"
 
+//See Java class in expansion-src for instructions about how to setup your project to enable ExpansionSupport
+//If you don't do it, your project will crash because of missing Java classes
+
 /** check if the expansion files are downloaded
  * if they are, the app can start normally
  * if they aren't the app must show a download screen
@@ -45,7 +48,7 @@ bool checkExpansionFiles();
  * return the absolute path of the file if everything went correctly
  * return NULL if there was a problem, "NOTDOWNLOADED" if the expansion is not properly downloaded (in that case, retry checkExpansionFiles)
  */
-CCString* getExpansionFileFullPath(bool main);
+std::string getExpansionFileFullPath(bool main);
 
 static inline void notifyServiceConnected()
 {

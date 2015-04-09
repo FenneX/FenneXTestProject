@@ -16,11 +16,17 @@
 NS_FENNEX_BEGIN
 
 bool isPhone();
-CCString* getLocalPath(const char* name);
+std::string getLocalPath(const char* name);
 
 //Use AppName if you need to actually show it. Use package identifier if you need to save files for example, as it does not contain special characters
-const char* getAppName();
-const char* getPackageIdentifier();
+std::string getAppName();
+std::string getPackageIdentifier();
+
+/* Get an unique identifier of the device.
+ - on iOS, it uses identifierForVendor, which CAN change if all apps are uninstalled at once then reinstalled. It can also be null at the beginning. If it is, retry later
+ - on Android, it uses ANDROID_IT, which CAN change on factory reset and can be different if there are several accounts on the device.
+ */
+std::string getUniqueIdentifier();
 
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
@@ -31,7 +37,7 @@ void copyResourceFileToLocal(const char* path);
 //implemented by platform because cocos2d version doesn't return the string identifier
 //Android version is a copy of getCurrentLanguageJNI defined in main.cpp
 //iOS version is defined in AppController
-const char* getLocalLanguage();
+std::string getLocalLanguage();
 
 bool isConnected();
 
@@ -73,21 +79,25 @@ float getDeviceLuminosity();
 //Change the device luminosity, must be a float between 0 and 1
 void setDeviceLuminosity(float);
 
-//Open system settings activity
-void openSystemSettings();
+//Open system settings app. Should always work on iOS8+ and Android. Not available on iOS < 8
+//Return true if the settings app will open
+bool openSystemSettings();
 
 //Launch Youtube intent on Android, simple openUrl on iOS
 void launchYoutube();
+
+//Return if a package is installed on android, return false on iOS
+bool isPackageInstalled(std::string packageName);
 
 //On iOS, those notifications will automatically start being thrown after getDeviceVolume has been called for the first time
 //On Android, they are always on
 static inline void notifyVolumeChanged()
 {
-	performNotificationAfterDelay("VolumeChanged", DcreateP(Fcreate(getDeviceVolume()), Screate("Volume"), NULL), 0.01);
+	DelayedDispatcher::eventAfterDelay("VolumeChanged", DcreateP(Fcreate(getDeviceVolume()), Screate("Volume"), NULL), 0.01);
 }
 
 inline void notifyMemoryWarning(){
-	AppDelegate* delegate = (AppDelegate*)cocos2d::CCApplication::sharedApplication();
+	AppDelegate* delegate = (AppDelegate*)cocos2d::Application::getInstance();
 #warning : maybe this should be async to run on main thread ?
 	delegate->applicationDidReceiveMemoryWarning();
 }

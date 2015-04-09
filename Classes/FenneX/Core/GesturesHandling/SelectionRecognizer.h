@@ -45,17 +45,18 @@ class SelectionRecognizer : public GenericRecognizer
 public:
     static SelectionRecognizer* sharedRecognizer(void);
     
-    virtual bool onTouchBegan(CCTouch *touch, CCEvent *pEvent);
-    virtual void onTouchMoved(CCTouch *touch, CCEvent *pEvent);
-    virtual void onTouchEnded(CCTouch *touch, CCEvent *pEvent);
-    bool isTouchInSelection(CCTouch *touch);
-    void cancelSelectionForTouch(CCTouch *touch);
+    virtual bool onTouchBegan(Touch *touch, Event *pEvent);
+    virtual void onTouchMoved(Touch *touch, Event *pEvent);
+    virtual void onTouchEnded(Touch *touch, Event *pEvent);
+    virtual void cleanTouches();
+    bool isTouchInSelection(Touch *touch);
+    void cancelSelectionForTouch(Touch *touch);
 protected:
     void init();
     
 protected:
     std::map<int, Vec2> storedTouches;//key : touch ID, value : origin
-    void checkForSelection(CCObject* obj);
+    void checkForSelection(EventCustom* event);
 };
 NS_FENNEX_END
 

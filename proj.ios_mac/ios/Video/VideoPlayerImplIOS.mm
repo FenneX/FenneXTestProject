@@ -40,18 +40,18 @@ USING_NS_FENNEX;
 	UIInterfaceOrientation orientation = ((UIViewController*)[AppController sharedController].viewController).interfaceOrientation;
 	if(UIInterfaceOrientationIsLandscape(orientation) && orientation != currentOrientation)
 	{
-        CGAffineTransform transform = CGAffineTransformMakeRotation(orientation == UIInterfaceOrientationLandscapeRight ? M_PI / 2 : -M_PI / 2);
+        CGAffineTransform transform = CGAffineTransformIdentity;
         if(isFullScreen)
         {
             CGRect bounds = [[UIScreen mainScreen] bounds];
             float scale = 0;
-            if(_size.width / bounds.size.height > _size.height / bounds.size.width)
+            if(_size.height / bounds.size.height > _size.width / bounds.size.width)
             {
-                scale = bounds.size.height / _size.width;
+                scale = bounds.size.height / _size.height;
             }
             else
             {
-                scale = bounds.size.width / _size.height;
+                scale = bounds.size.width / _size.width;
             }
             transform = CGAffineTransformScale(transform, scale, scale);
         }
@@ -73,8 +73,8 @@ USING_NS_FENNEX;
     }
     else
     {
-        [player.view setCenter:CGPointMake((currentOrientation == UIInterfaceOrientationLandscapeRight ? _position.y : bounds.size.width - _position.y),
-                                           (currentOrientation == UIInterfaceOrientationLandscapeLeft ? _position.x : bounds.size.height - _position.x))];
+        //Y-axis is inverted
+        [player.view setCenter:CGPointMake(_position.x, bounds.size.height - _position.y)];
     }
 }
 
@@ -87,7 +87,7 @@ USING_NS_FENNEX;
     }
     else if (reason == MPMovieFinishReasonPlaybackError)
     {
-        NSLog(@"Error when trying to play video");
+        notifyVideoError([path UTF8String]);
     }
     else if (reason == MPMovieFinishReasonUserExited)
     {
@@ -238,16 +238,16 @@ USING_NS_FENNEX;
         }
         
         CGPoint newCenter = fullscreen ? CGPointMake(bounds.size.width / 2, bounds.size.height/2) :
-                                        CGPointMake((currentOrientation == UIInterfaceOrientationLandscapeRight ? _position.y : bounds.size.width - _position.y),
-                                           (currentOrientation == UIInterfaceOrientationLandscapeLeft ? _position.x : bounds.size.height - _position.x));
+                                         CGPointMake((currentOrientation == UIInterfaceOrientationLandscapeLeft ? _position.x : bounds.size.width - _position.x),
+                                                     bounds.size.height - _position.y);
         float scale = 0;
-        if(_size.width / bounds.size.height > _size.height / bounds.size.width)
+        if(_size.height / bounds.size.height > _size.width / bounds.size.width)
         {
-            scale = fullscreen ? bounds.size.height / _size.width : _size.width / bounds.size.height;
+            scale = fullscreen ? bounds.size.height / _size.height : _size.height / bounds.size.height;
         }
         else
         {
-            scale = fullscreen ? bounds.size.width / _size.height : _size.height / bounds.size.width;
+            scale = fullscreen ? bounds.size.width / _size.width : _size.width / bounds.size.width;
         }
         
         [UIView animateWithDuration: 0.5
@@ -345,8 +345,8 @@ USING_NS_FENNEX;
             NSLog(@"Write result for thumbnail %@ : %@, fullPath : %@", thumbnailName, (result ? @"OK" : @"Problem"), thumbnailPath);
             if(result)
             {
-                CCString* fullPath = ScreateF("%s/Documents/%s.png", getenv("HOME"), [thumbnailName UTF8String]);
-                CCTextureCache::sharedTextureCache()->removeTextureForKey(fullPath->getCString());
+                std::string fullPath =  std::string(getenv("HOME")) + "/Documents/"+[thumbnailName UTF8String]+".png";
+                CCTextureCache::sharedTextureCache()->removeTextureForKey(fullPath.c_str());
             }
             else
             {

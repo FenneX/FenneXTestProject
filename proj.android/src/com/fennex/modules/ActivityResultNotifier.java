@@ -27,12 +27,12 @@ package com.fennex.modules;
 import java.util.ArrayList;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
-import org.cocos2dx.lib.Cocos2dxBitmap;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.FrameLayout;
 
 /* Implements ActivityResult so that the MainActivity doesn't have to redo all this common code
  * Responders are used to respond to ActivityResult (when you get the response of an Intent)
@@ -93,7 +93,7 @@ public abstract class ActivityResultNotifier extends Cocos2dxActivity implements
 	{
 		Log.i("ActivityResultNotifier", "Activity result received ...");
 		super.onActivityResult(requestCode, resultcode, intent);
-		if (intent != null && resultcode == RESULT_OK) 
+		if (resultcode == RESULT_OK)
 		{
 			Log.i("ActivityResultNotifier", "Valid intent, notifying children ...");
 			for(ActivityResultResponder responder : responders)
@@ -105,7 +105,7 @@ public abstract class ActivityResultNotifier extends Cocos2dxActivity implements
 		}
 		else
 		{
-			Log.i("ActivityResultNotifier", "Intent not valid");
+			Log.i("ActivityResultNotifier", "Result not OK");
 		}
 	}
 	
@@ -215,4 +215,9 @@ public abstract class ActivityResultNotifier extends Cocos2dxActivity implements
 			observer.onStateChanged(ActivityObserver.DESTROY);
 		}
 	}
+
+    public FrameLayout getMainLayout()
+    {
+        return mFrameLayout;
+    }
 }

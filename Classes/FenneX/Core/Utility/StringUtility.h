@@ -52,11 +52,11 @@ const char* upperCaseString(const char* text);
 bool stringEndsWith(const char *str, const char *suffix);
 
 //Do a substring with utf8 aware code
-std::string utf8_substr(const std::string& str, unsigned int start, unsigned int leng);
+std::string utf8_substr(const std::string& str, long start, long leng);
 //Get the size of a single character
-int utf8_chsize( const char* source );
+long utf8_chsize( const char* source );
 //Get the size of an utf8 string
-int utf8_len( const std::string& s );
+long utf8_len( const std::string& s );
 NS_FENNEX_END
 
 #endif /* defined(__FenneX__StringUtility__) */

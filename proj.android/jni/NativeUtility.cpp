@@ -44,7 +44,7 @@ bool isPhone()
     return result;
 }
 
-CCString* getLocalPath(const char* name)
+std::string getLocalPath(const char* name)
 {
 	JniMethodInfo minfo;
 	CCAssert(JniHelper::getStaticMethodInfo(minfo, CLASS_NAME, "getLocalPath", "()Ljava/lang/String;"), "Function doesn't exist");
@@ -54,12 +54,14 @@ CCString* getLocalPath(const char* name)
 
 	const char *nativeString = minfo.env->GetStringUTFChars(directory, 0);
     CCLOG("Getting local path : %s, name : %s", nativeString, name);
-	CCString* path = ScreateF("%s/%s", nativeString, name);
+	std::string path = std::string(nativeString) + "/" + name;
 	minfo.env->ReleaseStringUTFChars(directory, nativeString);
+	minfo.env->DeleteLocalRef(directory);
+	minfo.env->DeleteLocalRef(minfo.classID);
 	return path;
 }
 
-const char* getAppName()
+std::string getAppName()
 {
 	JniMethodInfo minfo;
 	CCAssert(JniHelper::getStaticMethodInfo(minfo, CLASS_NAME, "getAppName", "()Ljava/lang/String;"), "Function doesn't exist");
@@ -69,12 +71,12 @@ const char* getAppName()
        
     const char *nativeString = minfo.env->GetStringUTFChars(name, 0);
     CCLOG("Getting app name : %s", nativeString);
-    CCString* path = ScreateF("%s", nativeString);
+    std::string path = std::string(nativeString);
     minfo.env->ReleaseStringUTFChars(name, nativeString);
-    return path->getCString();
+    return path;
 }
 
-const char* getPackageIdentifier()
+std::string getPackageIdentifier()
 {
 	JniMethodInfo minfo;
 	CCAssert(JniHelper::getStaticMethodInfo(minfo, CLASS_NAME, "getPackageIdentifier", "()Ljava/lang/String;"), "Function doesn't exist");
@@ -84,9 +86,24 @@ const char* getPackageIdentifier()
 
 	const char *nativeString = minfo.env->GetStringUTFChars(name, 0);
     CCLOG("Getting app package identifier : %s", nativeString);
-	CCString* path = ScreateF("%s", nativeString);
-	minfo.env->ReleaseStringUTFChars(name, nativeString);
-	return path->getCString();
+    std::string path = std::string(nativeString);
+    minfo.env->ReleaseStringUTFChars(name, nativeString);
+    return path;
+}
+
+std::string getUniqueIdentifier()
+{
+	JniMethodInfo minfo;
+	CCAssert(JniHelper::getStaticMethodInfo(minfo, CLASS_NAME, "getUniqueIdentifier", "()Ljava/lang/String;"), "Function doesn't exist");
+
+	jstring name = (jstring) minfo.env->CallStaticObjectMethod(minfo.classID, minfo.methodID);
+    minfo.env->DeleteLocalRef(minfo.classID);
+
+	const char *nativeString = minfo.env->GetStringUTFChars(name, 0);
+    CCLOG("Getting Unique identifier : %s", nativeString);
+    std::string identifier = std::string(nativeString);
+    minfo.env->ReleaseStringUTFChars(name, nativeString);
+    return identifier;
 }
 
 void copyResourceFileToLocal(const char* path)
@@ -97,18 +114,17 @@ void copyResourceFileToLocal(const char* path)
     minfo.env->DeleteLocalRef(minfo.classID);
 }
 
-const char* getLocalLanguage()
+std::string getLocalLanguage()
 {
     JniMethodInfo minfo;
     CCAssert(JniHelper::getStaticMethodInfo(minfo, "org/cocos2dx/lib/Cocos2dxHelper", "getCurrentLanguage", "()Ljava/lang/String;"), "Function doesn't exist");
 
     jstring str = (jstring)minfo.env->CallStaticObjectMethod(minfo.classID, minfo.methodID);
     minfo.env->DeleteLocalRef(minfo.classID);
-    CCString *ret = new CCString(JniHelper::jstring2string(str).c_str());
-    ret->autorelease();
+    std::string ret = std::string(JniHelper::jstring2string(str).c_str());
     minfo.env->DeleteLocalRef(str);
 
-    return ret->getCString();
+    return ret;
 }
 
 bool isConnected()
@@ -226,12 +242,13 @@ void setDeviceLuminosity(float luminosity)
     minfo.env->DeleteLocalRef(minfo.classID);
 }
 
-void openSystemSettings()
+bool openSystemSettings()
 {
     JniMethodInfo minfo;
-    CCAssert(JniHelper::getStaticMethodInfo(minfo, CLASS_NAME, "openSystemSettings", "()V"), "Function doesn't exist");
-    minfo.env->CallStaticVoidMethod(minfo.classID, minfo.methodID);
+    CCAssert(JniHelper::getStaticMethodInfo(minfo, CLASS_NAME, "openSystemSettings", "()Z"), "Function doesn't exist");
+    bool result = minfo.env->CallStaticBooleanMethod(minfo.classID, minfo.methodID);
     minfo.env->DeleteLocalRef(minfo.classID);
+    return result;
 }
 
 void launchYoutube()
@@ -240,6 +257,13 @@ void launchYoutube()
     CCAssert(JniHelper::getStaticMethodInfo(minfo, CLASS_NAME, "launchYoutube", "()V"), "Function doesn't exist");
     minfo.env->CallStaticVoidMethod(minfo.classID, minfo.methodID);
     minfo.env->DeleteLocalRef(minfo.classID);
+}
+
+bool isPackageInstalled(std::string packageId)
+{
+	JniMethodInfo minfo;
+	CCAssert(JniHelper::getStaticMethodInfo(minfo, CLASS_NAME, "isPackageInstalled", "(Ljava/lang/String;)Z"), "Function doesn't exist");
+	return minfo.env->CallStaticBooleanMethod(minfo.classID, minfo.methodID, minfo.env->NewStringUTF(packageId.c_str()));
 }
 
 NS_FENNEX_END

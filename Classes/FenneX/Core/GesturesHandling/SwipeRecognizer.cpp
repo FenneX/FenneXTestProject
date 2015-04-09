@@ -46,61 +46,65 @@ SwipeRecognizer* SwipeRecognizer::sharedRecognizer(void)
 
 void SwipeRecognizer::init()
 {
-    touchStart = new CCDictionary();
+    touchStart.clear();
     touchInitialPosition.clear();
     minMovement = 40;
     minSpeed = 50;
 }
 
-
-
-bool SwipeRecognizer::onTouchBegan(CCTouch *touch, CCEvent *pEvent)
+bool SwipeRecognizer::onTouchBegan(Touch *touch, Event *pEvent)
 {
-    touchStart->setObject(Fcreate(TIME), touch->getID());
+    touchStart.insert(std::make_pair(touch->getID(), TIME));
     touchInitialPosition.insert(std::make_pair(touch->getID(), Scene::touchPosition(touch)));
     return true;
 }
 
-void SwipeRecognizer::onTouchMoved(CCTouch *touch, CCEvent *pEvent)
+void SwipeRecognizer::onTouchMoved(Touch *touch, Event *pEvent)
 {
     
 }
 
-void SwipeRecognizer::onTouchEnded(CCTouch *touch, CCEvent *pEvent)
+void SwipeRecognizer::onTouchEnded(Touch *touch, Event *pEvent)
 {
 #if VERBOSE_TOUCH_RECOGNIZERS
     CCLOG("linked ? %s", mainLinker->linkedObjectOf(touch) == NULL ? "yes" : "no");
-    CCLOG("is in start ? %s", touchStart->objectForKey(touch->getID()) != NULL ? "yes" : "no");
-    CCLOG("time ? %s", (TIME - ((CCFloat*)touchStart->objectForKey(touch->getID()))->getValue()) < 2.0 ? "yes" : "no");
-    CCLOG("initial position : %f, %f, current : %f, %f", touchInitialPosition->at(touch->getID()).x, touchInitialPosition->at(touch->getID()).y, Scene::touchPosition(touch).x, Scene::touchPosition(touch).y);
+    CCLOG("is in start ? %s", touchStart.find(touch->getID()) != touchStart.end() ? "yes" : "no");
+    CCLOG("time ? %s", (TIME - touchStart.at(touch->getID())) < 2.0 ? "yes" : "no");
+    CCLOG("initial position : %f, %f, current : %f, %f", touchInitialPosition.at(touch->getID()).x, touchInitialPosition.at(touch->getID()).y, Scene::touchPosition(touch).x, Scene::touchPosition(touch).y);
 #endif
     if(mainLinker != NULL
        && mainLinker->linkedObjectOf(touch) == NULL
-       && touchStart->objectForKey(touch->getID()) != NULL)
+       && touchStart.find(touch->getID()) != touchStart.end())
     {
-        CCPoint initialPosition = touchInitialPosition.at(touch->getID());
-        CCPoint currentPosition = Scene::touchPosition(touch);
+        Vec2 initialPosition = touchInitialPosition.at(touch->getID());
+        Vec2 currentPosition = Scene::touchPosition(touch);
         if(fabsf(initialPosition.x - currentPosition.x) >= minMovement * RESOLUTION_MULTIPLIER &&
            fabsf(initialPosition.y - currentPosition.y) <= fabsf(initialPosition.x - currentPosition.x) &&
            fabsf(initialPosition.x - currentPosition.x) > fabsf(initialPosition.y - currentPosition.y) &&
-           fabsf(initialPosition.x - currentPosition.x) / (TIME - TOFLOAT(touchStart->objectForKey(touch->getID()))) > minSpeed * RESOLUTION_MULTIPLIER)
+           fabsf(initialPosition.x - currentPosition.x) / (TIME - touchStart.at(touch->getID())) > minSpeed * RESOLUTION_MULTIPLIER)
         {
             CCDictionary* infos = CCDictionary::create();
             infos->setObject(touch, "Touch");
             infos->setObject(initialPosition.x > currentPosition.x ? Screate("Left") : Screate("Right"), "Direction");
             infos->setObject(Fcreate(initialPosition.x), "InitialPositionX");
             infos->setObject(Fcreate(initialPosition.y), "InitialPositionY");
-            CCNotificationCenter::sharedNotificationCenter()->postNotification("SwipeRecognized", infos);
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("SwipeRecognized", infos);
         }
         
     }
-    touchStart->removeObjectForKey(touch->getID());
+    touchStart.erase(touch->getID());
     touchInitialPosition.erase(touch->getID());
 }
 
-void SwipeRecognizer::cancelRecognitionForTouch(CCTouch* touch)
+void SwipeRecognizer::cleanTouches()
 {
-    touchStart->removeObjectForKey(touch->getID());
+    touchStart.clear();
+    touchInitialPosition.clear();
+}
+
+void SwipeRecognizer::cancelRecognitionForTouch(Touch* touch)
+{
+    touchStart.erase(touch->getID());
     touchInitialPosition.erase(touch->getID());
 }
 NS_FENNEX_END

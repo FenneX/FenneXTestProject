@@ -33,6 +33,7 @@ import java.io.InputStream;
 
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.Context;
@@ -90,6 +91,13 @@ public class NativeUtility
     public static String getPackageIdentifier()
     {
         String packageName = getMainActivity().getClass().getPackage().getName();
+        Log.d(TAG, "returning app package identifier : " + packageName);
+        return packageName;
+    }
+
+    public static String getUniqueIdentifier()
+    {
+        String packageName = Settings.Secure.getString(getMainActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);;
         Log.d(TAG, "returning app package identifier : " + packageName);
         return packageName;
     }
@@ -267,7 +275,7 @@ public class NativeUtility
     public static void setDeviceLuminosity(float luminosity) 
     {
     	//1 is a reserved value, don't use it
-    	final float lumi = luminosity >= 1 ? 0.999999f : luminosity <= 0 ? 0.000001f : luminosity;
+    	final float lumi = luminosity >= 1 ? 0.999999f : luminosity <= 0.01 ? 0.01f : luminosity;
     	getMainActivity().runOnUiThread(new Runnable() 
     	{
     	     @Override
@@ -282,9 +290,18 @@ public class NativeUtility
     	});
     }
     
-    public static void openSystemSettings()
+    public static boolean openSystemSettings()
     {
-    	getMainActivity().startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+        boolean result = true;
+        try {
+            getMainActivity().startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+        }
+        catch (Exception e)
+        {
+            result = false;
+            Log.e(TAG, "Exception when opening settings: " + e.getLocalizedMessage());
+        }
+        return result;
     }
 
     public static void launchYoutube()
@@ -292,5 +309,17 @@ public class NativeUtility
     	Intent youtubeIntent = getMainActivity().getPackageManager().getLaunchIntentForPackage("com.google.android.youtube");
     	if (youtubeIntent != null) 
     		getMainActivity().startActivity(youtubeIntent);
+    }
+
+    public static boolean isPackageInstalled(String packageName) {
+        Context myContext = NativeUtility.getMainActivity().getBaseContext();
+        PackageManager myPackageMgr = myContext.getPackageManager();
+        try {
+            myPackageMgr.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 }

@@ -32,7 +32,7 @@ THE SOFTWARE.
 NS_FENNEX_BEGIN
 bool arrayContainsString(CCArray* list, CCString* string)
 {
-    CCObject* obj;
+    Ref* obj;
     CCARRAY_FOREACH(list, obj)
     {
         if(string->isEqual(obj))
@@ -45,7 +45,7 @@ int arrayGetStringIndex(CCArray* list, CCString* string)
 {
     for(int i = 0; i < list->count(); i++)
     {
-        CCObject* obj = list->objectAtIndex(i);
+        Ref* obj = list->objectAtIndex(i);
         if(string->isEqual(obj))
             return i;
     }
@@ -55,7 +55,7 @@ int arrayGetStringIndex(CCArray* list, CCString* string)
 void arrayRemoveString(CCArray* list, CCString* string)
 {
     
-    CCObject* obj;
+    Ref* obj;
     CCARRAY_FOREACH(list, obj)
     {
         if(string->isEqual(obj))
@@ -69,7 +69,7 @@ void arrayRemoveString(CCArray* list, CCString* string)
 void arrayRemoveStringFromOther(CCArray* list, CCArray* other)
 {
     
-    CCObject* obj;
+    Ref* obj;
     CCArray* objectsToRemove = Acreate();
     CCARRAY_FOREACH(list, obj)
     {
@@ -127,9 +127,9 @@ std::vector<std::pair<std::string, std::string>> getConversions()
     char separator[20];
     char lowerCase[20];
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    long bufferSize = 0;
+    ssize_t bufferSize = 0;
     //Load file from apk
-    const char* charbuffer = reinterpret_cast<const char*>(CCFileUtils::sharedFileUtils()->getFileData("letters_conversion.txt", "r", &bufferSize));
+    const char* charbuffer = reinterpret_cast<const char*>(FileUtils::getInstance()->getFileData("letters_conversion.txt", "r", &bufferSize));
     if (charbuffer) {
         int index = 0;
         while (sscanf(&charbuffer[index], "%20s %20s %20s", upperCase, separator, lowerCase) !=EOF)
@@ -167,7 +167,7 @@ CCString* upperCaseString(CCString* text)
     std::string to;
     for(int i = 0; i < from.length(); i+= utf8_chsize(&from[i]))
     {
-        int charLength = utf8_chsize(&from[i]);
+        long charLength = utf8_chsize(&from[i]);
         std::string charString = from.substr(i, charLength);
         int conversionIndex = 0;
         while(conversionIndex < conversions.size() && conversions[conversionIndex].second != charString)
@@ -197,18 +197,18 @@ bool stringEndsWith(const char *str, const char *suffix)
 {
     if (!str || !suffix)
         return 0;
-    size_t lenstr = strlen(str);
-    size_t lensuffix = strlen(suffix);
+    long lenstr = strlen(str);
+    long lensuffix = strlen(suffix);
     if (lensuffix >  lenstr)
         return 0;
     return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
 }
 
 //comes from http://www.zedwood.com/article/cpp-utf-8-mb_substr-function
-std::string utf8_substr(const std::string& str, unsigned int start, unsigned int leng)
+std::string utf8_substr(const std::string& str, long start, long leng)
 {
     if (leng==0) { return ""; }
-    unsigned int c, i, ix, q, min=std::string::npos, max=std::string::npos;
+    long c, i, ix, q, min=std::string::npos, max=std::string::npos;
     for (q=0, i=0, ix=str.length(); i < ix; i++, q++)
     {
         if (q==start){ min=i; }
@@ -229,7 +229,7 @@ std::string utf8_substr(const std::string& str, unsigned int start, unsigned int
 }
 
 //comes from strutil 1.5 https://code.google.com/p/strutil/
-int utf8_chsize( const char* source )
+long utf8_chsize( const char* source )
 {
     const unsigned ch = (unsigned char)*source;
     if ( ch < 192 )
@@ -246,10 +246,10 @@ int utf8_chsize( const char* source )
         return 6;
 }
 
-int utf8_len( const std::string& s )
+long utf8_len( const std::string& s )
 {
     const char* it = s.c_str();
-    int n = 0;
+    long n = 0;
     
     while ( *it )
     {

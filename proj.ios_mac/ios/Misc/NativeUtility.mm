@@ -40,22 +40,27 @@ bool isPhone()
     return [[UIDevice currentDevice] userInterfaceIdiom] != UIUserInterfaceIdiomPad;
 }
 
-CCString* getLocalPath(const char* name)
+std::string getLocalPath(const char* name)
 {
-    return ScreateF("%s/Documents/%s", getenv("HOME"), name);
+    return std::string(getenv("HOME"))+"/Documents/"+name;
 }
 
-const char* getAppName()
+std::string getAppName()
 {
     return [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] UTF8String];
 }
 
-const char* getPackageIdentifier()
+std::string getPackageIdentifier()
 {
     return [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] UTF8String];
 }
 
-const char* getLocalLanguage()
+std::string getUniqueIdentifier()
+{
+    return [[[[UIDevice currentDevice] identifierForVendor] UUIDString] UTF8String];
+}
+
+std::string getLocalLanguage()
 {
     // get the current language and country config
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -151,14 +156,24 @@ void setDeviceLuminosity(float percent) {
     mainScreen.brightness = percent;
 }
 
-void openSystemSettings()
+bool openSystemSettings()
 {
-    
+    //Only available since iOS8
+    if (&UIApplicationOpenSettingsURLString != NULL) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        return true;
+    }
+    return false;
 }
 
 void launchYoutube()
 {
     openUrl("http://www.youtube.fr/");
+}
+
+bool isPackageInstalled(std::string packageName)
+{
+    return false;
 }
 
 NS_FENNEX_END

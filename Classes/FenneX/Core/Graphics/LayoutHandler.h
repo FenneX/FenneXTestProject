@@ -36,7 +36,7 @@ class EventResponder;
 
 NS_FENNEX_BEGIN
 
-class LayoutHandler : public CCObject
+class LayoutHandler : public Ref
 {
 public:
     static LayoutHandler* sharedHandler(void);
@@ -52,6 +52,7 @@ private:
     GraphicLayer* layer;
     Scene* currentScene;
     EventResponder* responder;
+    Vector<EventListenerCustom*> listeners;
 };
 NS_FENNEX_END
 

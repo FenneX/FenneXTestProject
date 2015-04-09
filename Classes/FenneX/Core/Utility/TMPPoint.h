@@ -22,8 +22,8 @@
  THE SOFTWARE.
  ****************************************************************************///
 
-#ifndef __Puzzle__TMPPoint__
-#define __Puzzle__TMPPoint__
+#ifndef __FenneX__TMPPoint__
+#define __FenneX__TMPPoint__
 
 #include "cocos2d.h"
 
@@ -40,11 +40,11 @@ public:
     
     static TMPPoint* create();
     static TMPPoint* create(float x, float y);
-    static TMPPoint* create(CCPoint pos);
+    static TMPPoint* create(Vec2 pos);
     
     TMPPoint();
     TMPPoint(float x, float y);
-    TMPPoint(CCPoint pos);
+    TMPPoint(Vec2 pos);
     
     virtual TMPPoint* clone() const
     {
@@ -54,4 +54,4 @@ public:
     }
 };
 
-#endif /* defined(__Puzzle__TMPPoint__) */
+#endif /* defined(__FenneX__TMPPoint__) */

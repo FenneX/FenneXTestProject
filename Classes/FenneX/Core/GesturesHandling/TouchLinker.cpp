@@ -25,29 +25,14 @@ THE SOFTWARE.
 #include "TouchLinker.h"
 
 NS_FENNEX_BEGIN
-TouchLinker::TouchLinker()
-{
-    touchLinker = CCDictionary::create();
-    touchLinker->retain();
-    touches = CCArray::create();
-    touches->retain();
-}
 
-TouchLinker::~TouchLinker()
+void TouchLinker::recordTouch(Touch* touch)
 {
-    touchLinker->release();
-    touches->release();
-}
-
-void TouchLinker::recordTouch(CCTouch* touch)
-{
-    if(!touches->containsObject(touch))
+    if(!touches.contains(touch))
     {
-        CCObject* obj;
         bool shouldAdd = true;
-        CCARRAY_FOREACH(touches, obj)
+        for(Touch* otherTouch : touches)
         {
-            CCTouch* otherTouch = (CCTouch*)obj;
             if(otherTouch->getID() == touch->getID())
             {
                 shouldAdd = false;
@@ -55,105 +40,99 @@ void TouchLinker::recordTouch(CCTouch* touch)
         }
         if(shouldAdd)
         {
-            touches->addObject(touch);
+            touches.pushBack(touch);
         }
     }
 }
 
-void TouchLinker::removeTouch(CCTouch* touch)
+void TouchLinker::removeTouch(Touch* touch)
 {
-    if(touches->containsObject(touch))
+    if(touches.contains(touch))
     {
-        touches->removeObject(touch);
+        touches.eraseObject(touch);
     }
-    if(touchLinker->objectForKey(touch->getID()) != NULL)
+    if(touchLinker.at(touch->getID()) != NULL)
     {
-        touchLinker->removeObjectForKey(touch->getID());
+        touchLinker.erase(touch->getID());
     }
 }
 
-void TouchLinker::linkTouch(CCTouch* touch, CCObject* object)
+void TouchLinker::linkTouch(Touch* touch, Ref* object)
 {
     if(touch != NULL && object != NULL)
     {
-        touchLinker->setObject(object, touch->getID());
+        touchLinker.insert(touch->getID(), object);
         this->recordTouch(touch);
     }
 }
 
-bool TouchLinker::isTouchLinkedTo(CCTouch* touch, CCObject* object)
+bool TouchLinker::isTouchLinkedTo(Touch* touch, Ref* object)
 {
-    if(touchLinker->objectForKey(touch->getID()) == object)
+    if(touchLinker.at(touch->getID()) == object)
     {
         return true;
     }
     return false;
 }
 
-CCObject* TouchLinker::linkedObjectOf(CCTouch* touch)
+Ref* TouchLinker::linkedObjectOf(Touch* touch)
 {
-    return touchLinker->objectForKey(touch->getID());
+    return touchLinker.at(touch->getID());
 }
 
-CCArray* TouchLinker::touchesLinkedTo(CCObject* object)
+Vector<Touch*> TouchLinker::touchesLinkedTo(Ref* object)
 {
-    CCObject* obj;
-    CCArray* linked = CCArray::create();
-    CCARRAY_FOREACH(touches, obj)
+    Vector<Touch*> linked;
+    for(Touch* touch : touches)
     {
-        CCTouch* touch = (CCTouch*)obj;
-        if(touchLinker->objectForKey(touch->getID()) == object)
+        if(touchLinker.at(touch->getID()) == object)
         {
-            linked->addObject(touch);
+            linked.pushBack(touch);
         }
     }
     return linked;
 }
 
-void TouchLinker::unlinkTouch(CCTouch* touch)
+void TouchLinker::unlinkTouch(Touch* touch)
 {
-    touchLinker->removeObjectForKey(touch->getID());
+    touchLinker.erase(touch->getID());
 }
 
-CCArray* TouchLinker::unlinkObject(CCObject* object)
+Vector<Touch*> TouchLinker::unlinkObject(Ref* object)
 {
-    CCObject* obj;
-    CCArray* linked = CCArray::create();
-    CCARRAY_FOREACH(touches, obj)
+    Vector<Touch*> linked;
+    for(Touch* touch : touches)
     {
-        CCTouch* touch = (CCTouch*)obj;
-        if(touchLinker->objectForKey(touch->getID()) == object)
+        if(touchLinker.at(touch->getID()) == object)
         {
-            touchLinker->removeObjectForKey(touch->getID());
-            linked->addObject(touch);
+            touchLinker.erase(touch->getID());
+            linked.pushBack(touch);
         }
     }
     return linked;
 }
 
-CCArray* TouchLinker::allTouches()
+Vector<Touch*> TouchLinker::allTouches()
 {
     return touches;
 }
 
-CCArray* TouchLinker::allObjects()
+Vector<Ref*> TouchLinker::allObjects()
 {
-    CCObject* obj;
-    CCArray* objects = CCArray::create();
-    CCARRAY_FOREACH(touches, obj)
+    Vector<Ref*> objects;
+    for(Touch* touch : touches)
     {
-        CCTouch* touch = (CCTouch*)obj;
-        CCObject* linked = touchLinker->objectForKey(touch->getID());
-        if(linked != NULL && !objects->containsObject(linked))
+        Ref* linked = touchLinker.at(touch->getID());
+        if(linked != NULL && !objects.contains(linked))
         {
-            objects->addObject(linked);
+            objects.pushBack(linked);
         }
     }
     return objects;
 }
 
-int TouchLinker::count()
+long TouchLinker::count()
 {
-    return touches->count();
+    return touches.size();
 }
 NS_FENNEX_END

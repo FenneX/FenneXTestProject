@@ -52,65 +52,70 @@ void SelectionRecognizer::init()
 }
 
 
-bool SelectionRecognizer::onTouchBegan(CCTouch *touch, CCEvent *pEvent)
+bool SelectionRecognizer::onTouchBegan(Touch *touch, Event *pEvent)
 {
     storedTouches.insert(std::make_pair(touch->getID(), Scene::touchPosition(touch)));
-    performSelectorAfterDelay(this, callfuncO_selector(SelectionRecognizer::checkForSelection), duration, touch);
-    CCNotificationCenter::sharedNotificationCenter()->postNotification("SelectionStarted", DcreateP(touch, Screate("Touch"), NULL));
+    DelayedDispatcher::funcAfterDelay(std::bind(&SelectionRecognizer::checkForSelection, this, std::placeholders::_1), touch, duration);
+    Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("SelectionStarted", DcreateP(touch, Screate("Touch"), NULL));
     return true;
 }
 
-void SelectionRecognizer::onTouchMoved(CCTouch *touch, CCEvent *pEvent)
+void SelectionRecognizer::onTouchMoved(Touch *touch, Event *pEvent)
 {
     if(isTouchInSelection(touch))
     {
-        CCPoint touchOrigin = storedTouches.at(touch->getID());
-        if(ccpDistance(Scene::touchPosition(touch), touchOrigin) > maxMovement)
+        Vec2 touchOrigin = storedTouches.at(touch->getID());
+        if(Scene::touchPosition(touch).getDistance(touchOrigin) > maxMovement)
         {
             cancelSelectionForTouch(touch);
         }
         else
         {
-            CCNotificationCenter::sharedNotificationCenter()->postNotification("SelectionMoved", DcreateP(touch, Screate("Touch"), NULL));
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("SelectionMoved", DcreateP(touch, Screate("Touch"), NULL));
         }
     }
 }
 
-void SelectionRecognizer::onTouchEnded(CCTouch *touch, CCEvent *pEvent)
+void SelectionRecognizer::onTouchEnded(Touch *touch, Event *pEvent)
 {
     cancelSelectionForTouch(touch);
 }
 
-bool SelectionRecognizer::isTouchInSelection(CCTouch *touch)
+void SelectionRecognizer::cleanTouches()
+{
+    storedTouches.clear();
+}
+
+bool SelectionRecognizer::isTouchInSelection(Touch *touch)
 {
     return storedTouches.find(touch->getID()) != storedTouches.end();
 }
 
-void SelectionRecognizer::cancelSelectionForTouch(CCTouch* touch)
+void SelectionRecognizer::cancelSelectionForTouch(Touch* touch)
 {
     if(isTouchInSelection(touch))
     {
-        CCNotificationCenter::sharedNotificationCenter()->postNotification("SelectionCanceled", DcreateP(touch, Screate("Touch"), Pcreate(storedTouches.at(touch->getID())), Screate("Origin"), NULL));
+        Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("SelectionCanceled", DcreateP(touch, Screate("Touch"), Pcreate(storedTouches.at(touch->getID())), Screate("Origin"), NULL));
         storedTouches.erase(touch->getID());
     }
 }
 
-void SelectionRecognizer::checkForSelection(CCObject* obj)
+void SelectionRecognizer::checkForSelection(EventCustom* event)
 {
-    CCTouch* touch = (CCTouch*)obj;
+    Touch* touch = (Touch*)event->getUserData();
     //the touch could have been discarded in the meantime
     if(isTouchInSelection(touch))
     {
-        CCPoint currentLocation = Scene::touchPosition(touch);
-        CCPoint touchOrigin = storedTouches.at(touch->getID());
-        CCObject* target = mainLinker->linkedObjectOf(touch);
-        if(ccpDistance(Scene::touchPosition(touch), touchOrigin) <= maxMovement)
+        Vec2 currentLocation = Scene::touchPosition(touch);
+        Vec2 touchOrigin = storedTouches.at(touch->getID());
+        Ref* target = mainLinker->linkedObjectOf(touch);
+        if(Scene::touchPosition(touch).getDistance(touchOrigin) <= maxMovement)
         {
-            CCNotificationCenter::sharedNotificationCenter()->postNotification("SelectionRecognized", DcreateP(touch, Screate("Touch"), target, Screate("Target"), NULL));
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("SelectionRecognized", DcreateP(touch, Screate("Touch"), target, Screate("Target"), NULL));
         }
         else
         {
-            CCNotificationCenter::sharedNotificationCenter()->postNotification("SelectionCanceled", DcreateP(touch, Screate("Touch"), Pcreate(storedTouches.at(touch->getID())), Screate("Origin"), target, Screate("Target"), NULL));
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("SelectionCanceled", DcreateP(touch, Screate("Touch"), Pcreate(storedTouches.at(touch->getID())), Screate("Origin"), target, Screate("Target"), NULL));
         }
         
         storedTouches.erase(touch->getID());

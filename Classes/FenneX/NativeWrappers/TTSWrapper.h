@@ -36,13 +36,13 @@ void initTTS();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 jobject getInstance();
 #endif
-bool speakText(const char* text[], int arraySize, int speechID = -1);
+bool speakText(std::vector<std::string> text, int speechID = -1);
 void stopSpeakText();
 bool isSpeaking();
 
 static inline void notifyTTSDone(int speechID)
 {
-    performNotificationAfterDelay("TTSDone", DcreateP(Icreate(speechID), Screate("Identifier"), NULL), 0.01);
+    DelayedDispatcher::eventAfterDelay("TTSDone", DcreateP(Icreate(speechID), Screate("Identifier"), NULL), 0.01);
 }
 
 #endif /* defined(__FenneX__TTSWrapper_h) */

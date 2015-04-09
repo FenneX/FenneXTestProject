@@ -28,6 +28,7 @@ THE SOFTWARE.
 #include "AppMacros.h"
 #include "SynchronousReleaser.h"
 #include "FenneXCCBLoader.h"
+#include "InputLabel.h"
 
 NS_FENNEX_BEGIN
 // singleton stuff
@@ -46,7 +47,7 @@ SceneSwitcher* SceneSwitcher::sharedSwitcher(void)
 
 SceneSwitcher::~SceneSwitcher()
 {
-    CCNotificationCenter::sharedNotificationCenter()->removeAllObservers(this);
+    Director::getInstance()->getEventDispatcher()->removeEventListener(planSceneSwitchListener);
     s_SharedSwitcher = NULL;
 }
 
@@ -57,9 +58,10 @@ void SceneSwitcher::init()
     currentSceneName = None;
     nextSceneParam = NULL;
     isEventFired = false;
+    keyboardLock = -1;
     delayReplace = 0;
-    CCDirector::sharedDirector()->setNotificationNode(CCNode::create());
-    CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(SceneSwitcher::planSceneSwitch), "PlanSceneSwitch", NULL);
+    Director::getInstance()->setNotificationNode(Node::create());
+    planSceneSwitchListener = Director::getInstance()->getEventDispatcher()->addCustomEventListener("PlanSceneSwitch", std::bind(&SceneSwitcher::planSceneSwitch, this, std::placeholders::_1));
 }
 
 void SceneSwitcher::initWithScene(SceneName nextSceneType, CCDictionary* param)
@@ -129,6 +131,11 @@ void SceneSwitcher::trySceneSwitch(float deltaTime)
         this->takeQueuedScene();
     }
     processingSwitch = false;
+    if(keyboardLock >= 0)
+    {
+        InputLabel::releaseAllKeyboardLocks();
+        keyboardLock = -1;
+    }
 }
 
 void SceneSwitcher::takeQueuedScene()
@@ -160,9 +167,9 @@ void SceneSwitcher::takeQueuedScene()
     queuedParam = NULL;
 }
 
-void SceneSwitcher::planSceneSwitch(CCObject *obj)
+void SceneSwitcher::planSceneSwitch(EventCustom* event)
 {
-    CCDictionary* infos = (CCDictionary*)obj;
+    CCDictionary* infos = (CCDictionary*)event->getUserData();
     if(!processingSwitch && nextScene == None)
     {
         //Unbind all async texture load: since the scene will be replaced, the image won't need their new texture
@@ -176,6 +183,7 @@ void SceneSwitcher::planSceneSwitch(CCObject *obj)
         nextSceneParam->retain();
         processingSwitch = true;
         isEventFired = false;
+        keyboardLock = InputLabel::preventKeyboardOpen();
     }
     else
     {
@@ -194,6 +202,11 @@ void SceneSwitcher::cancelSceneSwitch()
 #if VERBOSE_GENERAL_INFO
     CCLOG("Scene switch cancelled");
 #endif
+}
+
+bool SceneSwitcher::isSwitching()
+{
+    return processingSwitch || isEventFired;
 }
 
 void SceneSwitcher::replaceScene()
@@ -229,13 +242,13 @@ void SceneSwitcher::replaceScene()
         }
         CCAssert(nextScene != None, "in replaceScene in SceneSwitcher cannot go to scene None");
         currentScene = Scene::createScene(nextScene, nextSceneParam);
-        if(CCDirector::sharedDirector()->getRunningScene() == NULL)
+        if(Director::getInstance()->getRunningScene() == NULL)
         {
-            CCDirector::sharedDirector()->runWithScene(currentScene->getCocosScene());
+            Director::getInstance()->runWithScene(currentScene->getCocosScene());
         }
         else
         {
-            CCDirector::sharedDirector()->replaceScene(currentScene->getCocosScene());
+            Director::getInstance()->replaceScene(currentScene->getCocosScene());
         }
         if(nextSceneParam != NULL)
         {
@@ -244,7 +257,7 @@ void SceneSwitcher::replaceScene()
         }
         currentSceneName = nextScene;
         this->takeQueuedScene();
-        CCNotificationCenter::sharedNotificationCenter()->postNotification("SceneSwitched", DcreateP(Icreate(currentSceneName), Screate("Scene"), NULL));
+        Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("SceneSwitched", DcreateP(Icreate(currentSceneName), Screate("Scene"), NULL));
     }
     else
     {

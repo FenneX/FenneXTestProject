@@ -24,7 +24,7 @@
 #import <UIKit/UIKit.h>
 #import "AppController.h"
 #import "cocos2d.h"
-#import "CCEAGLView.h"
+#import "platform/ios/CCEAGLView-ios.h"
 #import "AppDelegate.h"
 #import "NSCCConverter.h"
 
@@ -97,23 +97,23 @@ static AppDelegate s_sharedApplication;
     {
         case MFMailComposeResultCancelled:
             NSLog(@"Mail cancelled: you cancelled the operation and no email message was queued.");
-            CCNotificationCenter::sharedNotificationCenter()->postNotification("MailCanceled");
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("MailCanceled");
             break;
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved: you saved the email message in the drafts folder.");
-            CCNotificationCenter::sharedNotificationCenter()->postNotification("MailSaved");
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("MailSaved");
             break;
         case MFMailComposeResultSent:
             NSLog(@"Mail send: the email message is queued in the outbox. It is ready to send.");
-            CCNotificationCenter::sharedNotificationCenter()->postNotification("MailSent");
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("MailSent");
             break;
         case MFMailComposeResultFailed:
             NSLog(@"Mail failed: the email message was not saved or queued, possibly due to an error.");
-            CCNotificationCenter::sharedNotificationCenter()->postNotification("MailFailed");
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("MailFailed");
             break;
         default:
             NSLog(@"Mail not sent.");
-            CCNotificationCenter::sharedNotificationCenter()->postNotification("MailNotSent");
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("MailNotSent");
             break;
     }
 	
@@ -123,12 +123,15 @@ static AppDelegate s_sharedApplication;
 
 void uncaughtExceptionHandler(NSException *exception)
 {
+    NSLog(@"CRASH: %@", exception);
+    NSLog(@"Stack Trace: %@", [exception callStackSymbols]);
+    // Internal error reporting
     [Flurry logError:@"Uncaught" message:@"Crash!" exception:exception];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    //NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     // Override point for customization after application launch.
     _sharedController = self;
     
@@ -166,7 +169,7 @@ void uncaughtExceptionHandler(NSException *exception)
     [[UIApplication sharedApplication] setStatusBarHidden: YES];
     
     // IMPORTANT: Setting the GLView should be done after creating the RootViewController
-    cocos2d::GLView *glview = cocos2d::GLView::createWithEAGLView(eaglView);
+    cocos2d::GLView *glview = cocos2d::GLViewImpl::createWithEAGLView(eaglView);
     cocos2d::Director::getInstance()->setOpenGLView(glview);
     
     cocos2d::Application::getInstance()->run();
@@ -188,7 +191,7 @@ void uncaughtExceptionHandler(NSException *exception)
         if([notif.userInfo objectForKey:@"CallbackEvent"] != nil)
         {
             NSLog(@"local notif with callback event");
-            performNotificationAfterDelay([[notif.userInfo objectForKey:@"CallbackEvent"] UTF8String], [NSCCConverter ccDictionaryFromNSDictionary:notif.userInfo], 0.01);
+            DelayedDispatcher::eventAfterDelay([[notif.userInfo objectForKey:@"CallbackEvent"] UTF8String], [NSCCConverter ccDictionaryFromNSDictionary:notif.userInfo], 0.01);
         }
     }
     return YES;
@@ -205,7 +208,7 @@ void uncaughtExceptionHandler(NSException *exception)
         if([notif.userInfo objectForKey:@"CallbackEvent"] != nil)
         {
             NSLog(@"local notif with callback event");
-            CCNotificationCenter::sharedNotificationCenter()->postNotification([[notif.userInfo objectForKey:@"CallbackEvent"] UTF8String], [NSCCConverter ccDictionaryFromNSDictionary:notif.userInfo]);
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent([[notif.userInfo objectForKey:@"CallbackEvent"] UTF8String], [NSCCConverter ccDictionaryFromNSDictionary:notif.userInfo]);
         }
     }
 }
@@ -217,7 +220,7 @@ void uncaughtExceptionHandler(NSException *exception)
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
     //cocos2d::CCDirector::sharedDirector()->pause();
-    cocos2d::NotificationCenter::sharedNotificationCenter()->postNotification("AppWillResignActive");
+    Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("AppWillResignActive");
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

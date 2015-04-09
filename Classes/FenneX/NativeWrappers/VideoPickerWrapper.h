@@ -40,7 +40,7 @@ USING_NS_FENNEX;
 //  <uses-permission android:name="android.permission.CAMERA" />
 
 //Before actually starting a video record, you should show a Preview.
-void startVideoRecordPreview(CCPoint position, CCSize size);
+void startVideoRecordPreview(Vec2 position, cocos2d::Size size);
 void stopVideoRecordPreview();
 //You can start a video recording directly after a Preview. When you stop it, a VideoPicked notify will be thrown
 void startVideoRecording();
@@ -59,28 +59,28 @@ void getAllVideos();
 
 static inline void notifyVideoPicked(const char* fullPath)
 {
-    performNotificationAfterDelay("VideoPicked", DcreateP(Screate(fullPath), Screate("Path"), NULL), 0.01);
+    DelayedDispatcher::eventAfterDelay("VideoPicked", DcreateP(Screate(fullPath), Screate("Path"), NULL), 0.01);
 }
 
 static inline void notifyVideoFound(const char* fullPath)
 {
-    performNotificationAfterDelay("VideoFound", DcreateP(Screate(fullPath), Screate("Path"), NULL), 0.01);
+    DelayedDispatcher::eventAfterDelay("VideoFound", DcreateP(Screate(fullPath), Screate("Path"), NULL), 0.01);
 }
 
 //This notification will be sent after VideoPicked (it is necesary on iOS to be there because the reference URL is currently not saved) : you should save the name yourself if you need it
 static inline void notifyVideoName(const char* path, const char* name)
 {
-    performNotificationAfterDelay("VideoNameResolved", DcreateP(Screate(name), Screate("Name"), Screate(path), Screate("Path"), NULL), 0.01);
+    DelayedDispatcher::eventAfterDelay("VideoNameResolved", DcreateP(Screate(name), Screate("Name"), Screate(path), Screate("Path"), NULL), 0.01);
 }
 
 static inline void notifyRecordingCancelled()
 {
-    performNotificationAfterDelay("VideoRecordingCancelled", Dcreate(), 0.01);
+    DelayedDispatcher::eventAfterDelay("VideoRecordingCancelled", Dcreate(), 0.01);
 }
 
 static inline void notifyGetAllVideosFinished()
 {
-    performNotificationAfterDelay("GetAllVideosFinished", Dcreate(), 0.01);
+    DelayedDispatcher::eventAfterDelay("GetAllVideosFinished", Dcreate(), 0.01);
 }
 
 #endif

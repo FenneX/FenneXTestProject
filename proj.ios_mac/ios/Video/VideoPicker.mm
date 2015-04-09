@@ -120,6 +120,10 @@ void getAllVideos()
                   }
               }];
          }
+         else
+         {
+             notifyGetAllVideosFinished();
+         }
      }
                               failureBlock:^(NSError *error)
      {
@@ -137,13 +141,15 @@ void getAllVideos()
         NSString* title = [item valueForProperty:MPMediaItemPropertyTitle];
         NSURL* url = [item valueForProperty:MPMediaItemPropertyAssetURL];
         NSNumber* duration = [item valueForProperty:MPMediaItemPropertyPlaybackDuration];
-        const char* path = [[url absoluteString] UTF8String];
-        
-        notifyVideoFound(path);
-        notifyVideoName(path, [title UTF8String]);
-        notifyVideoDurationAvailable(path, [duration floatValue]);
+        if(url != nil)
+        {
+            std::string path = [[url absoluteString] UTF8String];
+            NSLog(@"Sending video with path: %s, title: %s, duration : %f", path.c_str(), [title UTF8String], [duration floatValue]);
+            notifyVideoFound(path.c_str());
+            notifyVideoName(path.c_str(), [title UTF8String]);
+            notifyVideoDurationAvailable(path.c_str(), [duration floatValue]);
+        }
     }
-    notifyGetAllVideosFinished();
 }
 
 @implementation VideoPicker

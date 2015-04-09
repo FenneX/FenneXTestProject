@@ -54,33 +54,35 @@ void ScrollingRecognizer::init()
 
 
 
-bool ScrollingRecognizer::onTouchBegan(CCTouch *touch, CCEvent *pEvent)
+bool ScrollingRecognizer::onTouchBegan(Touch *touch, Event *pEvent)
 {
     lastPositions.insert(std::make_pair(touch->getID(), Scene::touchPosition(touch)));
     return true;
 }
 
-void ScrollingRecognizer::onTouchMoved(CCTouch *touch, CCEvent *pEvent)
+void ScrollingRecognizer::onTouchMoved(Touch *touch, Event *pEvent)
 {
     touchMoved = true;
 }
 
-void ScrollingRecognizer::onTouchEnded(CCTouch *touch, CCEvent *pEvent)
+void ScrollingRecognizer::onTouchEnded(Touch *touch, Event *pEvent)
 {
     if(lastPositions.find(touch->getID()) != lastPositions.end())
     {
-        CCObject* object = mainLinker->linkedObjectOf(touch);
-        CCArray* touches = this->mainLinker->touchesLinkedTo(object);
-        CCPoint currentPosition = this->positionWithTouches(touches);
-        CCPoint previousPosition = this->positionWithTouches(touches, true);
-        CCPoint offset = ccpSub(currentPosition, previousPosition);
+        Ref* object = mainLinker->linkedObjectOf(touch);
+        Vector<Touch*> touches = this->mainLinker->touchesLinkedTo(object);
+        Vec2 currentPosition = this->positionWithTouches(touches);
+        Vec2 previousPosition = this->positionWithTouches(touches, true);
+        Vec2 offset = currentPosition - previousPosition;
+        CCArray* touchesConvert = Acreate();
+        for(Touch* touch : touches) touchesConvert->addObject(touch);
         CCDictionary* arguments = DcreateP(Pcreate(offset), Screate("Offset"),
-                                           Icreate(touches->count()), Screate("TouchesCount"),
+                                           Icreate((int)touches.size()), Screate("TouchesCount"),
                                            Pcreate(currentPosition), Screate("Position"),
                                            Fcreate(TIME - lastScrollingNotificationTime), Screate("DeltaTime"),
-                                           touches, Screate("Touches"),
+                                           touchesConvert, Screate("Touches"),
                                            object, Screate("Target"), NULL);//Note : target have to be last because it can be NULL
-        CCNotificationCenter::sharedNotificationCenter()->postNotification("ScrollingEnded", arguments);
+        Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ScrollingEnded", arguments);
         
         if(lastPositions.find(touch->getID()) != lastPositions.end())
         {
@@ -89,35 +91,40 @@ void ScrollingRecognizer::onTouchEnded(CCTouch *touch, CCEvent *pEvent)
     }
 }
 
+void ScrollingRecognizer::cleanTouches()
+{
+    lastPositions.clear();
+}
+
 void ScrollingRecognizer::update(float delta)
 {
     if(TIME > lastScrollingNotificationTime + TIME_BETWEEN_NOTIFICATIONS && touchMoved)
     {
-        CCArray* objects = mainLinker->allObjects();
-        for(int i = -1; i < (int)objects->count(); i++)
+        Vector<Ref*> objects = mainLinker->allObjects();
+        for(int i = -1; i < objects.size(); i++)
         {
-            CCObject* object = i == -1 ? NULL : objects->objectAtIndex(i);
+            Ref* object = i == -1 ? NULL : objects.at(i);
             
-            CCArray* touches = this->mainLinker->touchesLinkedTo(object);
-            CCPoint currentPosition = this->positionWithTouches(touches);
-            CCPoint previousPosition = this->positionWithTouches(touches, true);
+            Vector<Touch*> touches = this->mainLinker->touchesLinkedTo(object);
+            Vec2 currentPosition = this->positionWithTouches(touches);
+            Vec2 previousPosition = this->positionWithTouches(touches, true);
             if(currentPosition.x != previousPosition.x || currentPosition.y != previousPosition.y)
             {
-                CCPoint offset = ccpSub(currentPosition, previousPosition);
+                Vec2 offset = currentPosition - previousPosition;
+                CCArray* touchesConvert = Acreate();
+                for(Touch* touch : touches) touchesConvert->addObject(touch);
                 CCDictionary* arguments = DcreateP(Pcreate(offset), Screate("Offset"),
-                                                   Icreate(touches->count()), Screate("TouchesCount"),
+                                                   Icreate((int)touches.size()), Screate("TouchesCount"),
                                                    Pcreate(currentPosition), Screate("Position"),
                                                    Fcreate(TIME - lastScrollingNotificationTime), Screate("DeltaTime"),
-                                                   touches, Screate("Touches"),
+                                                   touchesConvert, Screate("Touches"),
                                                    object, Screate("Target"), NULL);//Note : target have to be last because it can be NULL
-                CCNotificationCenter::sharedNotificationCenter()->postNotification("Scrolling", arguments);
+                Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("Scrolling", arguments);
             }
         }
-        CCArray* touches = mainLinker->allTouches();
-        CCObject* obj;
-        CCARRAY_FOREACH(touches, obj)
+        Vector<Touch*> touches = mainLinker->allTouches();
+        for(Touch* touch : touches)
         {
-            CCTouch* touch = (CCTouch*) obj;
             //Only update touches that haven't been ignored
             if(lastPositions.find(touch->getID()) != lastPositions.end())
             {
@@ -129,21 +136,19 @@ void ScrollingRecognizer::update(float delta)
     }
 }
 
-void ScrollingRecognizer::cancelRecognitionForTouch(CCTouch* touch)
+void ScrollingRecognizer::cancelRecognitionForTouch(Touch* touch)
 {
     lastPositions.erase(touch->getID());
 }
 
-CCPoint ScrollingRecognizer::positionWithTouches(CCArray* touches, bool last)
+Vec2 ScrollingRecognizer::positionWithTouches(Vector<Touch*> touches, bool last)
 {
     //compute current position as an average of touches locations
     int x = 0;
     int y = 0;
     int count = 0;
-    CCObject* obj;
-    CCARRAY_FOREACH(touches, obj)
+    for(Touch* touch : touches)
     {
-        CCTouch* touch = (CCTouch*) obj;
         if(lastPositions.find(touch->getID()) != lastPositions.end())
         {
             count++;
@@ -154,18 +159,18 @@ CCPoint ScrollingRecognizer::positionWithTouches(CCArray* touches, bool last)
     //avoid a divide by 0
     if(count == 0)
     {
-        return ccp(0, 0);
+        return Vec2(0, 0);
     }
     x /= count;
     y /= count;
-    return ccp(x, y);
+    return Vec2(x, y);
 }
 
-CCPoint ScrollingRecognizer::offsetFromLastPosition(CCObject* target)
+Vec2 ScrollingRecognizer::offsetFromLastPosition(Ref* target)
 {
-    CCArray* touches = this->mainLinker->touchesLinkedTo(target);
-    CCPoint currentPosition = this->positionWithTouches(touches);
-    CCPoint previousPosition = this->positionWithTouches(touches, true);
-    return ccpSub(currentPosition, previousPosition);
+    Vector<Touch*> touches = this->mainLinker->touchesLinkedTo(target);
+    Vec2 currentPosition = this->positionWithTouches(touches);
+    Vec2 previousPosition = this->positionWithTouches(touches, true);
+    return currentPosition - previousPosition;
 }
 NS_FENNEX_END
