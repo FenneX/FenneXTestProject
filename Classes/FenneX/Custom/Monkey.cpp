@@ -106,7 +106,7 @@ void Monkey::removeBadButtons(CCArray* buttons)
         RawObject* obj = (RawObject*)buttons->objectAtIndex(i);
         //Remove objects which don't collide with windowRect. It uses code from CCRect::intersectRect (which can't be used directly because a CCRect origin must be > (0,0))
         CCPoint pos = layer->getRealPosition(obj);
-        CCSize size = CCSizeMult(obj->getSize(), layer->getRealScale(obj));
+        CCSize size = SizeMult(obj->getSize(), layer->getRealScale(obj));
         if(windowRect.getMaxX() < pos.x - obj->getNode()->getAnchorPoint().x * size.width ||
            pos.x + (1-obj->getNode()->getAnchorPoint().x) * size.width <      windowRect.getMinX() ||
            windowRect.getMaxY() < pos.y - obj->getNode()->getAnchorPoint().y * size.height ||
@@ -114,9 +114,9 @@ void Monkey::removeBadButtons(CCArray* buttons)
         {
             buttons->removeObject(obj);
         }
-        else if(strcmp(obj->getEventName(), "PickImage") == 0
-           || strcmp(obj->getEventName(), "OpenKeyboard") == 0
-           || strcmp(obj->getEventName(), "DoNothing") == 0
+        else if(obj->getEventName() == "PickImage"
+           || obj->getEventName() == "OpenKeyboard"
+           || obj->getEventName() == "DoNothing"
            )
         {
             buttons->removeObject(obj);
@@ -130,7 +130,7 @@ CCArray* Monkey::selectAllScenesSwitchButtons(CCArray* buttons)
     for(int i = 0; i < buttons->count(); i++)
     {
         RawObject* obj = (RawObject*)buttons->objectAtIndex(i);
-        if(strcmp(obj->getEventName(), "PlanSceneSwitch") == 0)
+        if(obj->getEventName() == "PlanSceneSwitch")
         {
             result->addObject(obj);
         }
@@ -144,7 +144,7 @@ CCArray* Monkey::selectUnknownScenesSwitchButtons(CCArray* buttons)
     for(int i = 0; i < buttons->count(); i++)
     {
         RawObject* obj = (RawObject*)buttons->objectAtIndex(i);
-        if(strcmp(obj->getEventName(), "PlanSceneSwitch") == 0
+        if(obj->getEventName() == "PlanSceneSwitch"
            && !isSceneVisited[TOINT(obj->getEventInfos()->objectForKey("Scene"))])
         {
             result->addObject(obj);

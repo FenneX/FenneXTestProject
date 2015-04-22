@@ -56,7 +56,7 @@ void TestImagePickerScene::onImagePicked(Ref* obj)
     
     //Replace the image texture and set it visible
     FenneX::Image* target = (FenneX::Image*)layer->firstObjectWithName(identifier);
-    target->replaceTexture(getLocalPath(filename.c_str())->getCString(), true, true);
+    target->replaceTexture(getLocalPath(filename.c_str()), true, true);
     localFiles.push_back(filename);
     target->getNode()->setVisible(true);
     
@@ -69,7 +69,7 @@ void TestImagePickerScene::stop()
 {
     for(std::string filename : localFiles)
     {
-        int result = unlink(getLocalPath((filename + ".png").c_str())->getCString());
+        int result = unlink(getLocalPath((filename + ".png").c_str()).c_str());
         if(result == 0)
         {
             CCLOG("photo %s removed successfully", filename.c_str());
